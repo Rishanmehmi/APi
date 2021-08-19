@@ -1,0 +1,192 @@
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+        table
+        {
+            background-color: rgb(248, 244, 239);
+            color: rgb(241, 176, 78);
+        }
+         td
+        {
+            border: 2px solid black;
+            height: 70px;
+            width: 150px;
+            color: orange;
+            font-size: 25px;
+        }
+        td > span
+        {
+            margin-left: 5px;
+            text-align: center;
+        }
+        th
+        {
+            border: 2px solid black;
+            height: 40px;
+            width: 150px;
+            color: orange;
+            font-size: 35px;
+        }
+        .pagination
+        {
+            display: inline-block;
+        }
+        .pagination button
+        {
+            height: 70px;
+            width: 70px;
+            border: none;
+            border-radius: 15px;
+            float: left;
+            color: black;
+            background-color: rgb(240, 240, 240);
+            font-size: 50px;
+            font-weight: lighter;
+        }
+        .pagination button:active
+        {
+            background-color: rgb(11, 128, 128);
+            color: white;
+        }
+        .pagination button:hover
+        {
+            background-color: rgb(11, 128, 128);
+            color: white;
+        }
+        input
+        {
+            height: 70px;
+            width: 100px;
+            font: 50px;
+            overflow: hidden;
+            border: hidden;
+            border-radius: 15px;
+        }
+        body
+        {
+            font-size: 50px;
+            color: orange;
+            background-color: black;
+        }
+        .tray
+        {
+            height: 50px;
+            width: 150px;
+            border: none;
+            background-color: inherit;
+            overflow: hidden;
+        }
+    </style>
+    
+    <script>
+        var id = $("#id");
+        var f_name = $("#f_name");
+        var l_name = $("#l_name");
+        var avatar = $("#avatar");
+        var email = $("#email");
+       var N =1;
+       var api_url= "https://reqres.in/api/users?page=";
+       
+       async function getapi(url) {
+      
+    // Storing response
+    const response = await fetch(url);
+    
+    // Storing data in form of JSON
+    var myObj = await response.json();
+    document.getElementById("id").value=myObj.data[0].id;
+    document.getElementById("f_name").value=myObj.data[0].first_name;
+    document.getElementById("l_name").value=myObj.data[0].last_name;
+    document.getElementById("email").value=myObj.data[0].email;
+    document.getElementById("avatar").src=myObj.data[0].avatar;
+    console.log(myObj);
+    document.getElementById("index").innerHTML.value= N;
+   
+}
+getapi(api_url);
+
+function plus()
+{
+    N=N+1;
+    api_url = api_url.concat(N);
+    getapi(api_url);
+    api_url = "https://reqres.in/api/users?page=";
+    document.getElementById("index").value = N;
+    
+try {
+    if(N<1) throw "invalid page no.";
+    if(N>2) throw "Not yet available ";
+} catch (error) {
+   document.getElementById("index").value= error;
+}
+    return N;
+}
+function minus()
+{
+    N=N-1;
+    api_url = api_url.concat(N);
+    getapi(api_url);
+    api_url = "https://reqres.in/api/users?page=";
+    document.getElementById("index").value= N;
+    
+try {
+    if(N<1) throw "invalid page no.";
+    if(N>2) throw "Not yet available ";
+} catch (error) {
+   document.getElementById("index").value= error;
+}
+}
+function disp(intel)
+{
+    N=intel;
+    api_url = api_url.concat(N);
+    getapi(api_url);
+    api_url = "https://reqres.in/api/users?page=";
+    document.getElementById("index").value=N;
+}
+try {
+    if(N<1) throw "invalid page no.";
+    if(N>2) throw "Not yet available ";
+} catch (error) {
+   document.getElementById("index").value= error;
+}
+    </script>
+</head>
+<body  >
+    
+    <table style="border: 2px solid black;margin-left: 50px;">
+        <th>ID</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Avatar</th>
+        <tr>
+           <td ><input class="tray" id="id" ></td>
+           <td ><input class="tray" id="f_name"></td>
+            <td ><input class="tray" id="l_name"></td>
+            <td ><input class="tray" id="email"></td>
+            <td> <img src="" alt="avatar" id="avatar"></td>
+        </tr>
+          
+
+         
+    </table>
+    <div class="pagination">
+        <button onclick="minus();">&laquo;</button>
+        <button onclick="disp(1);">1</button>
+        <button onclick="disp(2);">2</button>
+        <button onclick="plus();">&raquo;</button>
+        PageNo. : <input style="width: fit-content;" value="" id="index">
+    </div>
+    
+</body>
+</html>
